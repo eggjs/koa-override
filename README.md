@@ -36,7 +36,7 @@ $ npm install koa-override --save
 
 ```js
 var bodyParser = require('koa-body-parser')
-var override = require('koa-override-method')
+var override = require('koa-override')
 
 app.use(bodyParser())
 app.use(override())
