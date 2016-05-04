@@ -32,10 +32,10 @@ function overrideMethod() {
       method = body._method.toUpperCase();
     }
 
-    // params support
-    var params = this.params;
-    if (params && params._method) {
-      method = body._method.toUpperCase();
+    // query support
+    var query = this.request.query;
+    if (query && query._method) {
+      method = query._method.toUpperCase();
     }
 
     // header support

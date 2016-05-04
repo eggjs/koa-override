@@ -72,6 +72,31 @@ describe('override method middleware', function () {
     .expect(200, done);
   });
 
+  it('should override with query._method', function (done) {
+    var app = koa();
+    app.use(bodyParser());
+    app.use(override());
+    app.use(function* () {
+      console.log(this.request.query)
+      this.body = {
+        method: this.method,
+        url: this.url,
+        query: this.request.query
+      };
+    });
+
+    request(app.listen())
+        .get('/foo?_method=delete')
+        .expect({
+          method: 'DELETE',
+          url: '/foo?_method=delete',
+          query: {
+            _method: 'delete'
+          }
+        })
+        .expect(200, done);
+  });
+
   it('should throw invalid overriden method error', function (done) {
     var app = koa();
     app.on('error', function (err) {
