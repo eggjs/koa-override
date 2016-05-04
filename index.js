@@ -32,6 +32,12 @@ function overrideMethod() {
       method = body._method.toUpperCase();
     }
 
+    // params support
+    var params = this.params;
+    if (params && params._method) {
+      method = body._method.toUpperCase();
+    }
+
     // header support
     var header = this.get('x-http-method-override');
     if (header) {
