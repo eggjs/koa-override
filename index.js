@@ -4,12 +4,13 @@ const methods = require('methods').map(method => {
   return method.toUpperCase();
 });
 
-module.exports = (options = {}) => {
+module.exports = options => {
+  options = options || {};
   options.allowedMethods = options.allowedMethods || [ 'POST' ];
 
   return function* overrideMethod(next) {
     const orginalMethod = this.request.method;
-    if (!options.allowedMethods.includes(orginalMethod)) return yield next;
+    if (options.allowedMethods.indexOf(orginalMethod) === -1) return yield next;
 
     let method;
     // body support
