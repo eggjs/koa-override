@@ -1,51 +1,40 @@
-/**!
- * koa-override - index.js
- *
- * Copyright (c) 2014 Jonathan Ong <me@jongleberry.com>
- * Copyright(c) fengmk2 and other contributors.
- * MIT Licensed
- *
- * Authors:
- *   Jonathan Ong <me@jongleberry.com>
- *   fengmk2 <m@fengmk2.com> (http://fengmk2.com)
- */
-
 'use strict';
 
-/**
- * Module dependencies.
- */
-
-var methods = require('methods').map(function (method) {
+const methods = require('methods').map(method => {
   return method.toUpperCase();
 });
 
-module.exports = overrideMethod;
+module.exports = options => {
+  options = options || {};
+  options.allowedMethods = options.allowedMethods || [ 'POST' ];
 
-function overrideMethod() {
-  return function* (next) {
-    var method = this.request.method;
+  return function* overrideMethod(next) {
+    const orginalMethod = this.request.method;
+    if (options.allowedMethods.indexOf(orginalMethod) === -1) return yield next;
 
+    let method;
     // body support
-    var body = this.request.body;
+    const body = this.request.body;
     if (body && body._method) {
       method = body._method.toUpperCase();
+    } else {
+      // header support
+      const header = this.get('x-http-method-override');
+      if (header) {
+        method = header.toUpperCase();
+      }
     }
 
-    // header support
-    var header = this.get('x-http-method-override');
-    if (header) {
-      method = header.toUpperCase();
+    if (method) {
+      // only allow supported methods
+      // if you want to support other methods,
+      // just create your own utility!
+      if (methods.indexOf(method) === -1) {
+        this.throw(400, `invalid overriden method: "${method}"`);
+      }
+      this.request.method = method;
     }
 
-    // only allow supported methods
-    // if you want to support other methods,
-    // just create your own utility!
-    if (methods.indexOf(method) === -1) {
-      this.throw(400, 'invalid overriden method: "' + method + '"');
-    }
-
-    this.request.method = method;
-    yield* next;
+    yield next;
   };
-}
+};
