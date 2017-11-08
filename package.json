@@ -43,10 +43,10 @@
     "rewrite"
   ],
   "engines": {
-    "node": ">= 4.0.0"
+    "node": ">= 8.0.0"
   },
   "ci": {
-    "version": "4, 6, 8"
+    "version": "8, 9"
   },
   "author": "fengmk2 <fengmk2@gmail.com> (http://fengmk2.com)",
   "license": "MIT"
