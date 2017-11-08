@@ -7,8 +7,8 @@
     "index.js"
   ],
   "scripts": {
-    "test": "mocha -R spec -t 5000 test/*.test.js",
-    "cov": "nyc -r text-summary -r lcov npm test",
+    "test": "egg-bin test",
+    "cov": "egg-bin cov",
     "lint": "eslint test *.js",
     "ci": "npm run lint && npm run cov",
     "autod": "autod -w --prefix '^'"
@@ -18,13 +18,12 @@
   },
   "devDependencies": {
     "autod": "*",
+    "egg-bin": "^4.3.5",
     "egg-ci": "^1.7.0",
     "eslint": "^4.0.0",
     "eslint-config-egg": "^4.2.1",
     "koa": "2",
     "koa-bodyparser": "4",
-    "mocha": "*",
-    "nyc": "^11.0.2",
     "supertest": "3"
   },
   "homepage": "https://github.com/node-modules/koa-override",
