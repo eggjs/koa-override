@@ -32,7 +32,7 @@ $ npm install koa-override --save
 ## Usage
 
 ```js
-const bodyParser = require('koa-body-parser')
+const bodyParser = require('koa-bodyparser')
 const override = require('koa-override')
 
 app.use(bodyParser())

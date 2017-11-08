@@ -8,18 +8,18 @@ module.exports = options => {
   options = options || {};
   options.allowedMethods = options.allowedMethods || [ 'POST' ];
 
-  return function* overrideMethod(next) {
-    const orginalMethod = this.request.method;
-    if (options.allowedMethods.indexOf(orginalMethod) === -1) return yield next;
+  return function overrideMethod(ctx, next) {
+    const orginalMethod = ctx.request.method;
+    if (options.allowedMethods.indexOf(orginalMethod) === -1) return next();
 
     let method;
     // body support
-    const body = this.request.body;
+    const body = ctx.request.body;
     if (body && body._method) {
       method = body._method.toUpperCase();
     } else {
       // header support
-      const header = this.get('x-http-method-override');
+      const header = ctx.get('x-http-method-override');
       if (header) {
         method = header.toUpperCase();
       }
@@ -30,11 +30,11 @@ module.exports = options => {
       // if you want to support other methods,
       // just create your own utility!
       if (methods.indexOf(method) === -1) {
-        this.throw(400, `invalid overriden method: "${method}"`);
+        ctx.throw(400, `invalid overriden method: "${method}"`);
       }
-      this.request.method = method;
+      ctx.request.method = method;
     }
 
-    yield next;
+    return next();
   };
 };
