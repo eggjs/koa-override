@@ -15,7 +15,7 @@ module.exports = options => {
     let method;
     // body support
     const body = ctx.request.body;
-    if (body && body._method) {
+    if (body && body._method && typeof body._method === 'string') {
       method = body._method.toUpperCase();
     } else {
       // header support
