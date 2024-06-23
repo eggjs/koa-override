@@ -1,3 +1,19 @@
+# Changelog
+
+## [4.0.0](https://github.com/eggjs/koa-override/compare/v3.0.0...v4.0.0) (2024-06-23)
+
+
+### ⚠ BREAKING CHANGES
+
+* drop Node.js < 18.19.0 support
+
+part of https://github.com/eggjs/egg/issues/3644
+
+https://github.com/eggjs/egg/issues/5257
+
+### Features
+
+* support cjs and esm both by tshy ([#7](https://github.com/eggjs/koa-override/issues/7)) ([f021708](https://github.com/eggjs/koa-override/commit/f0217084df2a7fb000378ff22aa6aef9aa26d170))
 
 3.0.0 / 2017-11-08
 ==================
