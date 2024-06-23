@@ -1,38 +1,35 @@
 {
   "name": "koa-override",
   "version": "3.0.0",
+  "engines": {
+    "node": ">= 18.19.0"
+  },
   "description": "method override middleware for koa",
-  "main": "index.js",
-  "files": [
-    "index.js"
-  ],
-  "scripts": {
-    "test": "egg-bin test",
-    "cov": "egg-bin cov",
-    "lint": "eslint test *.js",
-    "ci": "npm run lint && npm run cov",
-    "autod": "autod -w --prefix '^'"
-  },
-  "dependencies": {
-    "methods": "^1.1.2"
-  },
+  "dependencies": {},
   "devDependencies": {
-    "autod": "*",
-    "egg-bin": "^4.3.5",
-    "egg-ci": "^1.7.0",
-    "eslint": "^4.0.0",
-    "eslint-config-egg": "^4.2.1",
-    "koa": "2",
+    "@arethetypeswrong/cli": "^0.15.3",
+    "@eggjs/koa": "^2.18.3",
+    "@eggjs/tsconfig": "1",
+    "@types/koa-bodyparser": "^4.3.12",
+    "@types/mocha": "10",
+    "@types/node": "20",
+    "@types/supertest": "^6.0.2",
+    "egg-bin": "6",
+    "eslint": "8",
+    "eslint-config-egg": "13",
     "koa-bodyparser": "4",
-    "supertest": "3"
+    "supertest": "7",
+    "tshy": "1",
+    "tshy-after": "1",
+    "typescript": "5"
   },
-  "homepage": "https://github.com/node-modules/koa-override",
+  "homepage": "https://github.com/eggjs/koa-override",
   "repository": {
     "type": "git",
-    "url": "git://github.com/node-modules/koa-override.git"
+    "url": "git://github.com/eggjs/koa-override.git"
   },
   "bugs": {
-    "url": "https://github.com/node-modules/koa-override/issues"
+    "url": "https://github.com/eggjs/koa-override/issues"
   },
   "keywords": [
     "koa-override",
@@ -41,12 +38,40 @@
     "override",
     "rewrite"
   ],
-  "engines": {
-    "node": ">= 8.0.0"
+  "author": "fengmk2 <fengmk2@gmail.com> (https://github.com/fengmk2)",
+  "license": "MIT",
+  "scripts": {
+    "lint": "eslint --cache src test --ext .ts",
+    "test": "npm run lint -- --fix && egg-bin test",
+    "ci": "npm run lint && egg-bin cov && npm run prepublishOnly && attw --pack",
+    "prepublishOnly": "tshy && tshy-after"
   },
-  "ci": {
-    "version": "8, 9"
+  "type": "module",
+  "tshy": {
+    "exports": {
+      ".": "./src/index.ts",
+      "./package.json": "./package.json"
+    }
   },
-  "author": "fengmk2 <fengmk2@gmail.com> (http://fengmk2.com)",
-  "license": "MIT"
+  "exports": {
+    ".": {
+      "import": {
+        "source": "./src/index.ts",
+        "types": "./dist/esm/index.d.ts",
+        "default": "./dist/esm/index.js"
+      },
+      "require": {
+        "source": "./src/index.ts",
+        "types": "./dist/commonjs/index.d.ts",
+        "default": "./dist/commonjs/index.js"
+      }
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "types": "./dist/commonjs/index.d.ts",
+  "main": "./dist/commonjs/index.js"
 }

@@ -1,14 +1,12 @@
-'use strict';
-
-const assert = require('assert');
-const request = require('supertest');
-const koa = require('koa');
-const bodyParser = require('koa-bodyparser');
-const override = require('../');
+import { strict as assert } from 'node:assert';
+import request from 'supertest';
+import Koa from '@eggjs/koa';
+import bodyParser from 'koa-bodyparser';
+import override from '../src/index.js';
 
 describe('override method middleware', () => {
   it('should override with x-http-method-override header', () => {
-    const app = new koa();
+    const app = new Koa();
     app.use(override());
     app.use(ctx => {
       ctx.body = {
@@ -28,8 +26,8 @@ describe('override method middleware', () => {
   });
 
   it('should override with body._method', () => {
-    const app = new koa();
-    app.use(bodyParser());
+    const app = new Koa();
+    app.use((bodyParser as any)());
     app.use(override());
     app.use(ctx => {
       ctx.body = {
@@ -56,23 +54,52 @@ describe('override method middleware', () => {
       .expect(200);
   });
 
-  it('should throw invalid overriden method error', () => {
-    const app = new koa();
+  it('should ignore non string value on body._method', () => {
+    const app = new Koa();
+    app.use((bodyParser as any)());
+    app.use(override());
+    app.use(ctx => {
+      ctx.body = {
+        method: ctx.method,
+        url: ctx.url,
+        body: ctx.request.body,
+      };
+    });
+
+    return request(app.callback())
+      .post('/foo')
+      .send({
+        _method: 123,
+        haha: 'koa la',
+      })
+      .expect({
+        method: 'POST',
+        url: '/foo',
+        body: {
+          _method: 123,
+          haha: 'koa la',
+        },
+      })
+      .expect(200);
+  });
+
+  it('should throw invalid override method error', () => {
+    const app = new Koa();
     app.on('error', function(err) {
-      assert.equal(err.message, 'invalid overriden method: "SAVE"');
+      assert.equal(err.message, 'invalid override method: "SAVE"');
     });
     app.use(override());
 
     return request(app.callback())
       .post('/foo')
       .set('X-Http-Method-Override', 'SAVE')
-      .expect('invalid overriden method: "SAVE"')
+      .expect('invalid override method: "SAVE"')
       .expect(400);
   });
 
-  it('should dont override method on body._method and header both not match', () => {
-    const app = new koa();
-    app.use(bodyParser());
+  it('should don\'t override method on body._method and header both not match', () => {
+    const app = new Koa();
+    app.use((bodyParser as any)());
     app.use(override());
     app.use(ctx => {
       ctx.body = {
@@ -95,7 +122,7 @@ describe('override method middleware', () => {
   });
 
   it('should not allow override with x-http-method-override header on GET request', () => {
-    const app = new koa();
+    const app = new Koa();
     app.use(override());
     app.use(ctx => {
       ctx.body = {
@@ -115,7 +142,7 @@ describe('override method middleware', () => {
   });
 
   it('should not allow override with x-http-method-override header on PUT request', () => {
-    const app = new koa();
+    const app = new Koa();
     app.use(override());
     app.use(ctx => {
       ctx.body = {
@@ -135,7 +162,7 @@ describe('override method middleware', () => {
   });
 
   it('should custom options.allowedMethods work', () => {
-    const app = new koa();
+    const app = new Koa();
     app.use(override({
       allowedMethods: [ 'POST', 'PUT' ],
     }));
