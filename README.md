@@ -1,20 +1,12 @@
-koa-override
-=======
+# koa-override
 
 [![NPM version][npm-image]][npm-url]
-[![build status][travis-image]][travis-url]
-[![Test coverage][coveralls-image]][coveralls-url]
-[![David deps][david-image]][david-url]
 [![npm download][download-image]][download-url]
+[![CI](https://github.com/eggjs/koa-override/actions/workflows/nodejs.yml/badge.svg)](https://github.com/eggjs/koa-override/actions?query=branch%3Amaster)
+[![Coverage](https://img.shields.io/codecov/c/github/eggjs/koa-override.svg?style=flat-square)](https://codecov.io/gh/eggjs/koa-override)
 
 [npm-image]: https://img.shields.io/npm/v/koa-override.svg?style=flat-square
 [npm-url]: https://npmjs.org/package/koa-override
-[travis-image]: https://img.shields.io/travis/node-modules/koa-override.svg?style=flat-square
-[travis-url]: https://travis-ci.org/node-modules/koa-override
-[coveralls-image]: https://img.shields.io/coveralls/node-modules/koa-override.svg?style=flat-square
-[coveralls-url]: https://coveralls.io/r/node-modules/koa-override?branch=master
-[david-image]: https://img.shields.io/david/node-modules/koa-override.svg?style=flat-square
-[david-url]: https://david-dm.org/node-modules/koa-override
 [download-image]: https://img.shields.io/npm/dm/koa-override.svg?style=flat-square
 [download-url]: https://npmjs.org/package/koa-override
 
@@ -26,17 +18,17 @@ Refactor from [koa-override-method#5](https://github.com/koajs/override-method/p
 ## Install
 
 ```bash
-$ npm install koa-override --save
+npm install koa-override --save
 ```
 
 ## Usage
 
-```js
-const bodyParser = require('koa-bodyparser')
-const override = require('koa-override')
+```ts
+import bodyParser from 'koa-bodyparser';
+import override from 'koa-override';
 
-app.use(bodyParser())
-app.use(override())
+app.use(bodyParser());
+app.use(override());
 ```
 
 ## API
@@ -53,4 +45,10 @@ You shouldn't use this unless you know you're using override.
 
 ## License
 
-[MIT](./LICENSE)
+[MIT](LICENSE)
+
+## Contributors
+
+[![Contributors](https://contrib.rocks/image?repo=eggjs/koa-override)](https://github.com/eggjs/koa-override/graphs/contributors)
+
+Made with [contributors-img](https://contrib.rocks).
